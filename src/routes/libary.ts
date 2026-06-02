@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-
+import { v4 } from 'uuid';
 interface Books {
-    id: number
+    id: string
     title: string
     author: string
     publishedYear: Date
@@ -18,10 +18,11 @@ export async function Libary(app: FastifyInstance) {
 
     app.post('/', (request, replay) => {
         try {
-            const bodyShema = z.object({id: z.number, title: z.string().min(2), author: z.string(), publishedYear: z.date, read: z.boolean().default(false)})
+            const bodyShema = z.object({title: z.string().min(2), author: z.string(), publishedYear: z.date(), read: z.boolean().default(false)})
             const body = bodyShema.parse(request.body);
 
-            books.push(body);
+            books.push({id: v4(), ...body});
+            replay.status(201).send();
         } catch {
             replay.status(401).send("Impossível incluir este livro. Tente novamente mais tarde!")
         }
