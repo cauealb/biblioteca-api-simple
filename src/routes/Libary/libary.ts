@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { z } from 'zod';
+import { uuidv4, z } from 'zod';
 import { v4 } from 'uuid';
 interface Books {
     id: string
@@ -28,6 +28,19 @@ export async function Libary(app: FastifyInstance) {
         }
     })
 
+    app.get('/:id', (request, replay) => {
+        
+        try {
+            const idShema = z.object({ id: uuidv4() });
+            const { id } = idShema.parse(request.params);
+            
+            const myBook = books.find((book) => book.id === id);
+            replay.status(200).send(myBook);
+        } catch {
+            replay.status(401).send("Impossível visualizar este livro. Tente novamente mais tarde!")
+        }
+    })
+
     app.delete('/:id', (request, replay) => {
         try {
             const idShema = z.object({id: z.uuidv4()});
@@ -39,6 +52,20 @@ export async function Libary(app: FastifyInstance) {
             replay.status(200).send(books)
         } catch {
             replay.status(401).send("Impossível deletar este livro. Tente novamente mais tarde!")
+        }
+    })
+
+    app.put('/:id', (request, replay) => {
+        try {
+            const idShema = z.object({ id: uuidv4() });
+            const { id } = idShema.parse(request.params);
+
+            const bodyShema = z.object({ title: z.string().min(2), author: z.string(), publishedYear: z.date().default(new Date), read: z.boolean().default(false) });
+            const body = bodyShema.parse(request.body);
+
+            
+        } catch {
+            replay.status(401).send("Impossível atualizar este livro. Tente novamente mais tarde!")
         }
     })
 }

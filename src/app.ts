@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { Libary } from "./routes/libary";
+import { Libary } from "./routes/Libary/libary";
 const app = fastify();
 
 app.register(Libary, {
