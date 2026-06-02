@@ -33,8 +33,10 @@ export async function Libary(app: FastifyInstance) {
             const idShema = z.object({id: z.uuidv4()});
             const { id } = idShema.parse(request.params);
 
-            
+            const newLibary = books.filter((book) => (book.id != id));
+            books = newLibary
 
+            replay.status(200).send(books)
         } catch {
             replay.status(401).send("Impossível deletar este livro. Tente novamente mais tarde!")
         }
