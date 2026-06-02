@@ -63,9 +63,26 @@ export async function Libary(app: FastifyInstance) {
             const bodyShema = z.object({ title: z.string().min(2), author: z.string(), publishedYear: z.date().default(new Date), read: z.boolean().default(false) });
             const body = bodyShema.parse(request.body);
 
-            
+            // TODO: Terminar essa rota
         } catch {
             replay.status(401).send("Impossível atualizar este livro. Tente novamente mais tarde!")
+        }
+    })
+
+    app.patch('/checkBook/:id', (request, replay) => {
+        try {
+            const idShema = z.object({ id: uuidv4() });
+            const { id } = idShema.parse(request.params);
+            console.log('oi')
+            books.forEach(item => {
+                if (item.id === id) {
+                    item.read = true
+                }
+            })
+
+            replay.status(200).send()
+        } catch {
+            replay.status(401).send("Impossível checar este livro lido. Tente novamente mais tarde!")
         }
     })
 }
