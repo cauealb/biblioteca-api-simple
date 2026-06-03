@@ -22,14 +22,14 @@ export async function Book(app: FastifyInstance) {
 
     app.post('/', async (request, replay) => {
         try {
-            const bodyShema = z.object({title: z.string().min(2), author: z.string(), publishedYear: z.date().default(new Date), read: z.boolean().default(false)})
+            const bodyShema = z.object({title: z.string().min(2), author: z.string(), publishedDate: z.coerce.date() })
             const body = bodyShema.parse(request.body);
 
             await prisma.book.create({
                 data: {
                     title: body.title,
                     author: body.author,
-                    publishedDate: body.publishedYear
+                    publishedDate: body.publishedDate
                 }
             })
 
@@ -69,34 +69,29 @@ export async function Book(app: FastifyInstance) {
         }
     })
 
-    app.put('/:id', (request, replay) => {
+    app.put('/:id', async (request, replay) => {
         try {
-            const idShema = z.object({ id: uuidv4() });
+            const idShema = z.object({ id: z.coerce.number() });
             const { id } = idShema.parse(request.params);
 
-            const bodyShema = z.object({ title: z.string().min(2), author: z.string(), publishedYear: z.date().default(new Date), read: z.boolean().default(false) });
-            const body = bodyShema.parse(request.body);
+            const bodyShema = z.object({ title: z.string().min(2), author: z.string(), publishedDate: z.coerce.date() })
+            const body = bodyShema.parse(request.body)
 
-            // TODO: Terminar essa rota
-        } catch {
-            replay.status(400).send("Impossível atualizar este livro. Tente novamente mais tarde!")
-        }
-    })
-
-    app.patch('/checkBook/:id', (request, replay) => {
-        try {
-            const idShema = z.object({ id: uuidv4() });
-            const { id } = idShema.parse(request.params);
-
-            books.forEach(item => {
-                if (item.id === id) {
-                    item.read = true
+            await prisma.book.update({
+                where: {
+                    idBook: id
+                },
+                data: {
+                    title: body.title,
+                    author: body.author,
+                    publishedDate: body.publishedDate
                 }
             })
 
             replay.status(200).send()
-        } catch {
-            replay.status(400).send("Impossível checar este livro lido. Tente novamente mais tarde!")
+        } catch (ex) {
+            console.log(ex)
+            replay.status(400).send("Impossível atualizar este livro. Tente novamente mais tarde!")
         }
     })
 }
