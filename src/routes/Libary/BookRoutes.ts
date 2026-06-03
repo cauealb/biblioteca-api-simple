@@ -1,20 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 import type { FastifyInstance } from 'fastify';
-import { number, uuidv4, z } from 'zod';
-import { v4 } from 'uuid';
-interface Books {
-    id: string
-    title: string
-    author: string
-    publishedYear: Date
-    read: boolean
-}
-
-let books: Books[] = []
+import { z } from 'zod';
 
 const prisma = new PrismaClient()
 
-export async function Book(app: FastifyInstance) {
+export async function BookRoutes(app: FastifyInstance) {
      app.get('/',  async (_, replay) => {
         const book = await prisma.book.findMany()
         replay.status(200).send(book);
