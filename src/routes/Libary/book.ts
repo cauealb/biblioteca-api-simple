@@ -14,18 +14,25 @@ let books: Books[] = []
 
 const prisma = new PrismaClient()
 
-export async function Libary(app: FastifyInstance) {
+export async function Book(app: FastifyInstance) {
      app.get('/',  async (_, replay) => {
         const book = await prisma.book.findMany()
         replay.status(200).send(book);
     })
 
-    app.post('/', (request, replay) => {
+    app.post('/', async (request, replay) => {
         try {
             const bodyShema = z.object({title: z.string().min(2), author: z.string(), publishedYear: z.date().default(new Date), read: z.boolean().default(false)})
             const body = bodyShema.parse(request.body);
 
-            books.push({id: v4(), ...body});
+            await prisma.book.create({
+                data: {
+                    title: body.title,
+                    author: body.author,
+                    publishedDate: body.publishedYear
+                }
+            })
+            
             replay.status(201).send();
         } catch {
             replay.status(401).send("Impossível incluir este livro. Tente novamente mais tarde!")
