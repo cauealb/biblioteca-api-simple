@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client'
 import type { FastifyInstance } from 'fastify';
 import { uuidv4, z } from 'zod';
 import { v4 } from 'uuid';
@@ -11,9 +12,12 @@ interface Books {
 
 let books: Books[] = []
 
+const prisma = new PrismaClient()
+
 export async function Libary(app: FastifyInstance) {
-    app.get('/', (_, replay) => {
-        replay.status(200).send(books);
+     app.get('/',  async (_, replay) => {
+        const book = await prisma.book.findMany()
+        replay.status(200).send(book);
     })
 
     app.post('/', (request, replay) => {
