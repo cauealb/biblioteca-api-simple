@@ -42,8 +42,7 @@ export async function Book(app: FastifyInstance) {
     app.get('/:id', async (request, replay) => {
         
         try {
-            const idShema = z.object({ id: z.number() });
-            console.log(request.params)
+            const idShema = z.object({ id: z.coerce.number() });
             const { id } = idShema.parse(request.params);
             
             const book = await prisma.book.findFirst({
