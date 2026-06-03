@@ -1,7 +1,6 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 import { uuidv4, z } from 'zod';
 import { v4 } from 'uuid';
-import { estaValidado } from '../../app';
 interface Books {
     id: string
     title: string
@@ -13,12 +12,6 @@ interface Books {
 let books: Books[] = []
 
 export async function Libary(app: FastifyInstance) {
-    app.addHook("preValidation", (_, replay) => {
-        if (!estaValidado) {
-            replay.status(401).send("Inautorizado")
-        }
-    })
-
     app.get('/', (_, replay) => {
         replay.status(200).send(books);
     })
