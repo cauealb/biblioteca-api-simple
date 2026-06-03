@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import type { FastifyInstance } from 'fastify';
-import { uuidv4, z } from 'zod';
+import { number, uuidv4, z } from 'zod';
 import { v4 } from 'uuid';
 interface Books {
     id: string
@@ -32,37 +32,41 @@ export async function Book(app: FastifyInstance) {
                     publishedDate: body.publishedYear
                 }
             })
-            
+
             replay.status(201).send();
         } catch {
-            replay.status(401).send("Impossível incluir este livro. Tente novamente mais tarde!")
+            replay.status(400).send("Impossível incluir este livro. Tente novamente mais tarde!")
         }
     })
 
-    app.get('/:id', (request, replay) => {
+    app.get('/:id', async (request, replay) => {
         
         try {
-            const idShema = z.object({ id: uuidv4() });
+            const idShema = z.object({ id: z.number() });
+            console.log(request.params)
             const { id } = idShema.parse(request.params);
             
-            const myBook = books.find((book) => book.id === id);
-            replay.status(200).send(myBook);
+            const book = await prisma.book.findFirst({
+                where: {
+                    idBook: id
+                }
+            })
+            
+            replay.status(200).send(book);
         } catch {
-            replay.status(401).send("Impossível visualizar este livro. Tente novamente mais tarde!")
+            replay.status(400).send("Impossível visualizar este livro. Tente novamente mais tarde!")
         }
     })
 
-    app.delete('/:id', (request, replay) => {
+    app.delete('/:id', async (request, replay) => {
         try {
-            const idShema = z.object({id: z.uuidv4()});
+            const idShema = z.object({id: z.coerce.number() });
             const { id } = idShema.parse(request.params);
 
-            const newLibary = books.filter((book) => (book.id != id));
-            books = newLibary
-
-            replay.status(200).send(books)
+            await prisma.book.delete({ where: { idBook: id } })
+            replay.status(204).send()
         } catch {
-            replay.status(401).send("Impossível deletar este livro. Tente novamente mais tarde!")
+            replay.status(400).send("Impossível deletar este livro. Tente novamente mais tarde!")
         }
     })
 
@@ -76,7 +80,7 @@ export async function Book(app: FastifyInstance) {
 
             // TODO: Terminar essa rota
         } catch {
-            replay.status(401).send("Impossível atualizar este livro. Tente novamente mais tarde!")
+            replay.status(400).send("Impossível atualizar este livro. Tente novamente mais tarde!")
         }
     })
 
@@ -93,7 +97,7 @@ export async function Book(app: FastifyInstance) {
 
             replay.status(200).send()
         } catch {
-            replay.status(401).send("Impossível checar este livro lido. Tente novamente mais tarde!")
+            replay.status(400).send("Impossível checar este livro lido. Tente novamente mais tarde!")
         }
     })
 }
