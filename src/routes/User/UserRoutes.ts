@@ -16,7 +16,7 @@ export async function UserRoutes(app: FastifyInstance) {
 
   app.get("/:id", async (request, replay) => {
     try {
-      const idSchema = z.object({ id: z.number() });
+      const idSchema = z.object({ id: z.coerce.number() });
       const { id } = idSchema.parse(request.params);
 
       const user = await prisma.user.findFirst({
@@ -81,7 +81,7 @@ export async function UserRoutes(app: FastifyInstance) {
     }
   });
 
-  app.put('/:id', async (request, replay) => {
+  app.patch('/:id', async (request, replay) => {
     try {
         const idSchema = z.object({ id: z.coerce.number() });
         const { id } = idSchema.parse(request.params);
