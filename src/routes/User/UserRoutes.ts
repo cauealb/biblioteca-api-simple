@@ -1,14 +1,13 @@
 import type { FastifyInstance } from "fastify";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma.js";
 import z from "zod";
 import { randomUUID } from "node:crypto";
-
-const prisma = new PrismaClient();
+import { findManyUser } from "../../services/User/findManyUser.js";
 
 export async function UserRoutes(app: FastifyInstance) {
   app.get("/", async (_, replay) => {
     try {
-      const user = await prisma.user.findMany();
+      const user = findManyUser()
       return replay.status(200).send(user);
     } catch {
       return replay.status(400).send("Erro ao visualizar usuários!");
@@ -40,29 +39,43 @@ export async function UserRoutes(app: FastifyInstance) {
         name: z.string(),
         email: z.email(),
         password: z.coerce.string(),
-        role: z.string().default("user")
+        nameRole: z.enum(["Admin", "User"]).default("User")
       });
 
-      const { name, email, password, role } = requestSchema.parse(request.body);
+      const { name, email, password, nameRole } = requestSchema.parse(request.body);
 
-      const user = await prisma.user.findFirst({
+      const findUser = await prisma.user.findFirst({
         where: {
           email: email,
         },
       });
 
-      if (user) {
+      if (findUser) {
         throw new Error();
       }
 
-      // await prisma.user.create({
-      //   data: {
-      //     name: name,
-      //     email: email,
-      //     password: password,
-          
-      //   },
-      // });
+      const role = await prisma.role.findFirst({
+        where: { nameRole: nameRole }
+      })
+
+      const user = await prisma.user.create({
+        data: {
+          name: name,
+          email: email,
+          password: password,
+          idRole: role!.idRole
+        },
+      });
+
+      if(user) {
+        let sessionId = randomUUID()
+
+        await
+
+        return
+      }
+
+      throw new Error()
     } catch {
       return replay.status(400).send("Erro ao criar usuário!");
     }

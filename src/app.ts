@@ -6,7 +6,7 @@ import { RoleRoutes } from "./routes/Role/RoleRoutes.js";
 const app = fastify();
 
 app.register(cookie)
-app.register(RoleRoutes, { prefix: 'role' });
+app.register(RoleRoutes, { prefix: 'roles' });
 app.register(UserRoutes, { prefix: 'user' });
 app.register(BookRoutes, { prefix: 'book' });
 
