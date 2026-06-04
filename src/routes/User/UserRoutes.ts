@@ -5,6 +5,15 @@ import z, { email } from "zod";
 const prisma = new PrismaClient()
 
 export async function UserRoutes(app: FastifyInstance) {
+    app.get('/', async (_, replay) => {
+        try {
+            const user = await prisma.user.findMany();
+            replay.status(404).send(user);
+        } catch {
+            replay.status(400).send("Erro ao visualizar usuários!")
+        }
+    })
+
     app.post('', async (request, replay) => {
         try {
             const requestSchema = z.object({
@@ -37,4 +46,6 @@ export async function UserRoutes(app: FastifyInstance) {
             replay.status(400).send("Erro ao criar usuário!")
         }
     })
+
+    
 }
