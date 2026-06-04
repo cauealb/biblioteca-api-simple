@@ -8,7 +8,7 @@ export async function UserRoutes(app: FastifyInstance) {
   app.get("/", async (_, replay) => {
     try {
       const user = await prisma.user.findMany();
-      replay.status(404).send(user);
+      replay.status(200).send(user);
     } catch {
       replay.status(400).send("Erro ao visualizar usuários!");
     }
