@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { PrismaClient } from "@prisma/client";
 import z, { email } from "zod";
+import { request } from "node:http";
 
 const prisma = new PrismaClient();
 
@@ -61,6 +62,21 @@ export async function UserRoutes(app: FastifyInstance) {
           password: password,
         },
       });
+    } catch {
+      replay.status(400).send("Erro ao criar usuário!");
+    }
+  });
+
+  app.delete("/:id", async (request, replay) => {
+    try {
+      const idSchema = z.object({ id: z.coerce.number() });
+      const { id } = idSchema.parse(request.params);
+
+      await prisma.user.delete({
+        where: { idUser: id }
+      })
+
+      replay.status(201).send()
     } catch {
       replay.status(400).send("Erro ao criar usuário!");
     }
