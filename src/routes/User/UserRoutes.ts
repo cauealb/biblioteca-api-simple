@@ -8,9 +8,9 @@ export async function UserRoutes(app: FastifyInstance) {
   app.get("/", async (_, replay) => {
     try {
       const user = await prisma.user.findMany();
-      replay.status(200).send(user);
+      return replay.status(200).send(user);
     } catch {
-      replay.status(400).send("Erro ao visualizar usuários!");
+      return replay.status(400).send("Erro ao visualizar usuários!");
     }
   });
 
@@ -24,13 +24,12 @@ export async function UserRoutes(app: FastifyInstance) {
       });
 
       if (user) {
-        replay.status(200).send(user);
-        return;
+        return replay.status(200).send(user);
       }
 
-      replay.status(404).send();
+      return replay.status(404).send();
     } catch {
-      replay.status(400).send("Erro ao visualizar usuário!");
+      return replay.status(400).send("Erro ao visualizar usuário!");
     }
   });
 
@@ -62,7 +61,7 @@ export async function UserRoutes(app: FastifyInstance) {
         },
       });
     } catch {
-      replay.status(400).send("Erro ao criar usuário!");
+      return replay.status(400).send("Erro ao criar usuário!");
     }
   });
 
@@ -75,9 +74,9 @@ export async function UserRoutes(app: FastifyInstance) {
         where: { idUser: id }
       })
 
-      replay.status(201).send()
+      return replay.status(201).send()
     } catch {
-      replay.status(400).send("Erro ao deletar usuário!");
+      return replay.status(400).send("Erro ao deletar usuário!");
     }
   });
 
@@ -94,9 +93,9 @@ export async function UserRoutes(app: FastifyInstance) {
             data: { password: password }
         })
 
-        replay.status(200).send()
+        return replay.status(200).send()
     } catch {
-      replay.status(400).send("Erro ao atualizar senha do usuário!");
+      return replay.status(400).send("Erro ao atualizar senha do usuário!");
     }
   })
 }

@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 export async function BookRoutes(app: FastifyInstance) {
      app.get('/',  async (_, replay) => {
         const book = await prisma.book.findMany()
-        replay.status(200).send(book);
+        return replay.status(200).send(book);
     })
 
     app.post('/', async (request, replay) => {
@@ -23,9 +23,9 @@ export async function BookRoutes(app: FastifyInstance) {
                 }
             })
 
-            replay.status(201).send();
+            return replay.status(201).send();
         } catch {
-            replay.status(400).send("Impossível incluir este livro. Tente novamente mais tarde!")
+            return replay.status(400).send("Impossível incluir este livro. Tente novamente mais tarde!")
         }
     })
 
@@ -41,9 +41,9 @@ export async function BookRoutes(app: FastifyInstance) {
                 }
             })
             
-            replay.status(200).send(book);
+            return replay.status(200).send(book);
         } catch {
-            replay.status(400).send("Impossível visualizar este livro. Tente novamente mais tarde!")
+            return replay.status(400).send("Impossível visualizar este livro. Tente novamente mais tarde!")
         }
     })
 
@@ -53,9 +53,9 @@ export async function BookRoutes(app: FastifyInstance) {
             const { id } = idShema.parse(request.params);
 
             await prisma.book.delete({ where: { idBook: id } })
-            replay.status(204).send()
+            return replay.status(204).send()
         } catch {
-            replay.status(400).send("Impossível deletar este livro. Tente novamente mais tarde!")
+            return replay.status(400).send("Impossível deletar este livro. Tente novamente mais tarde!")
         }
     })
 
@@ -78,10 +78,10 @@ export async function BookRoutes(app: FastifyInstance) {
                 }
             })
 
-            replay.status(200).send()
+            return replay.status(200).send()
         } catch (ex) {
             console.log(ex)
-            replay.status(400).send("Impossível atualizar este livro. Tente novamente mais tarde!")
+            return replay.status(400).send("Impossível atualizar este livro. Tente novamente mais tarde!")
         }
     })
 }
