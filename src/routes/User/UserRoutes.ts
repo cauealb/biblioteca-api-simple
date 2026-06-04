@@ -1,6 +1,7 @@
 import type { FastifyInstance } from "fastify";
 import { PrismaClient } from "@prisma/client";
 import z from "zod";
+import { randomUUID } from "node:crypto";
 
 const prisma = new PrismaClient();
 
@@ -39,9 +40,10 @@ export async function UserRoutes(app: FastifyInstance) {
         name: z.string(),
         email: z.email(),
         password: z.coerce.string(),
+        role: z.string().default("user")
       });
 
-      const { name, email, password } = requestSchema.parse(request.body);
+      const { name, email, password, role } = requestSchema.parse(request.body);
 
       const user = await prisma.user.findFirst({
         where: {
@@ -53,13 +55,14 @@ export async function UserRoutes(app: FastifyInstance) {
         throw new Error();
       }
 
-      await prisma.user.create({
-        data: {
-          name: name,
-          email: email,
-          password: password,
-        },
-      });
+      // await prisma.user.create({
+      //   data: {
+      //     name: name,
+      //     email: email,
+      //     password: password,
+          
+      //   },
+      // });
     } catch {
       return replay.status(400).send("Erro ao criar usuário!");
     }
