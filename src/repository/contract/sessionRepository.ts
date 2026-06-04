@@ -1,8 +1,3 @@
-interface Session {
-    sessionId: string
-    expireAt: Date
-}
-
 export interface sessionRepository {
-    create(idUser: number): Promise<Session>
+    create(idUser: number, sessionId: string, expireAt: Date): Promise<void>
 } 
