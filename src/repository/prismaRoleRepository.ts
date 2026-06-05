@@ -2,7 +2,7 @@ import type { Role } from "@prisma/client";
 import prisma from "../lib/prisma.js";
 import type { roleRepository } from "./contract/roleRepository.js";
 
-export class prismaRoleRepository implements roleRepository {
+export class PrismaRoleRepository implements roleRepository {
     async create(nameRole: string) {
         return await prisma.role.create({
             data: { nameRole: nameRole }
