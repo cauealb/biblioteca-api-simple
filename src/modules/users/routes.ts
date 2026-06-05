@@ -4,17 +4,19 @@ import { DeleteUserController } from "./controllers/DeleteUserController.js";
 import { ListManyUsersController } from "./controllers/ListManyUsersController.js";
 import { ListUserByIdController } from "./controllers/ListUserByIdController.js";
 import { UpdateUserController } from "./controllers/UpdateUserController.js";
+import { ListUserByEmailController } from "./controllers/ListUserByEmailController.js";
 
 const createUserController = new CreateUserController()
 const deleteUserController = new DeleteUserController()
 const listManyUsersController = new ListManyUsersController()
 const listUserByIdController = new ListUserByIdController()
+const listUserByEmailController = new ListUserByEmailController()
 const updateUserController = new UpdateUserController()
 
 export async function UserRoutes(app: FastifyInstance) {
     app.get('/users', listManyUsersController.handle)
-    app.get('/users/:id', listUserByIdController.handle)
-    // TODO: Rota por email
+    app.get('/users/id/:id', listUserByIdController.handle)
+    app.get('/users/email/:email', listUserByEmailController.handle)
 
     app.post('/users', createUserController.handle)
     app.delete('/users/:id', deleteUserController.handle)
