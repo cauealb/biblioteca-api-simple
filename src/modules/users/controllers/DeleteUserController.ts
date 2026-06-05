@@ -11,7 +11,7 @@ export class DeleteUserController {
         const idSchema = z.object({ id: z.coerce.number() })
         const { id } = idSchema.parse(request.params)
 
-        await service.delete(id);
+        await service.execute(id);
         return replay.status(204).send()
     }
 }

@@ -7,7 +7,7 @@ export class DeleteUserService {
         private repository: UserRepository
     ) {}
 
-    async delete(id: number) {
+    async execute(id: number) {
         const userExists = await this.repository.findById(id);
 
         if(userExists) {
