@@ -6,7 +6,6 @@ import { findManyUser } from "../../services/User/findManyUser.js";
 import { findUserById } from "../../services/User/findFirstUserById.js";
 import { findUserByEmail } from "../../services/User/findFirstUserByEmail.js";
 import { findRoleByName } from "../../services/Role/findRoleByName.js";
-import { createUser } from "../../services/User/createUser.js";
 import { createSessionId } from "../../services/Session/createSessionId.js";
 import { deleteUser } from "../../services/User/deleteUser.js";
 import { updateUser } from "../../services/User/updateUser.js";
@@ -35,62 +34,6 @@ export async function UserRoutes(app: FastifyInstance) {
       return replay.status(404).send();
     } catch {
       return replay.status(400).send("Erro ao visualizar usuário!");
-    }
-  });
-
-  app.post("", async (request, replay) => {
-    try {
-      const requestSchema = z.object({
-        name: z.string(),
-        email: z.email(),
-        password: z.coerce.string(),
-        nameRole: z.enum(["Admin", "User"]).default("User")
-      });
-
-      const { name, email, password, nameRole } = requestSchema.parse(request.body);
-
-      const findUser = await findUserByEmail(email)
-
-      if (findUser) {
-        throw new Error();
-      }
-
-      const role = await findRoleByName(nameRole);
-
-      const user = await createUser({
-        name: name, 
-        email: email, 
-        password: password,
-        idRole: role!.idRole 
-      })
-
-      if(user) {
-        const data = await createSessionId(user.idUser)
-
-        return replay.setCookie('sessionId', data.sessionId, {
-          path: '/',
-          expires: data.expireAt
-        })
-      }
-
-      return replay.status(400).send("Houve algum erro ao criar usuário")
-    } catch {
-      return replay.status(400).send("Erro ao criar usuário!");
-    }
-  });
-
-  app.delete("/:id", async (request, replay) => {
-    try {
-      const idSchema = z.object({ id: z.coerce.number() });
-      const { id } = idSchema.parse(request.params);
-
-      if (!await deleteUser(id)) {
-        return replay.status(201).send()
-      } 
-
-      return replay.status(400).send()
-    } catch {
-      return replay.status(400).send("Erro ao deletar usuário!");
     }
   });
 

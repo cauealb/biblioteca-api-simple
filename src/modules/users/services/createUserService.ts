@@ -11,7 +11,7 @@ export class CreateUserService {
         if(userExists) {
             throw new Error("Já existe um usuário com esse email!")
         }
-
+        console.log(data)
         return this.userRepository.create(data)
     }
 }
