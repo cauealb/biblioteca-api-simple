@@ -25,7 +25,6 @@ export class CreateUserService {
         }
 
         const user: User = {...newUser.data, idRole: newUser.data.nameRole === "User" ? 2 : 1}
-
         return this.userRepository.create(user)
     }
 }
