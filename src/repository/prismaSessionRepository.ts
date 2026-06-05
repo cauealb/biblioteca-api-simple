@@ -10,5 +10,7 @@ export class PrismaSessionRepository implements sessionRepository {
                 expireAt: expireAt
             }
         })
+
+        return { sessionId, expireAt }
     }
 }
