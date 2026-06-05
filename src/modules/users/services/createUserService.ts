@@ -1,5 +1,4 @@
 import type { User, UserRepository } from "../../../repository/contract/userRepository.js";
-import z from "zod";
 
 export class CreateUserService {
     constructor(

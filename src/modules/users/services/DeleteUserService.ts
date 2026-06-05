@@ -1,5 +1,3 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaUserRepository } from "../../../repository/PrismaUserRepository.js";
 import type { UserRepository } from "../../../repository/contract/userRepository.js";
 
 export class DeleteUserService {

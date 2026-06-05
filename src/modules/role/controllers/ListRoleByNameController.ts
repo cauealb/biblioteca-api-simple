@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { PrismaRoleRepository } from "../../../repository/prismaRoleRepository.js";
+import { PrismaRoleRepository } from "../../../repository/PrismaRoleRepository.js";
 import { ListRoleByNameService } from "../services/ListRoleByNameService.js";
 
 const repository = new PrismaRoleRepository()

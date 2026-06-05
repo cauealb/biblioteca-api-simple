@@ -1,5 +1,5 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { CreateUserService } from "../services/createUserService.js";
+import { CreateUserService } from "../services/CreateUserService.js";
 import { PrismaUserRepository } from "../../../repository/PrismaUserRepository.js";
 import z from "zod";
 
