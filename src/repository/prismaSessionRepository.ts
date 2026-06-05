@@ -1,4 +1,4 @@
-import type { sessionRepository } from "./contract/sessionRepository.js";
+import type { sessionRepository, SessionResponse } from "./contract/sessionRepository.js";
 import prisma from "../lib/prisma.js";
 
 export class PrismaSessionRepository implements sessionRepository {
@@ -12,5 +12,9 @@ export class PrismaSessionRepository implements sessionRepository {
         })
 
         return { sessionId, expireAt }
+    }
+
+    async findAll() {
+        return await prisma.session.findMany()
     }
 }

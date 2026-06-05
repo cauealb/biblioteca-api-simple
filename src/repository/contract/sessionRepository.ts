@@ -4,4 +4,5 @@ export interface SessionResponse {
 }
 export interface sessionRepository {
     create(idUser: number, sessionId: string, expireAt: Date): Promise<SessionResponse>
+    findAll(): Promise<SessionResponse[]>
 } 
