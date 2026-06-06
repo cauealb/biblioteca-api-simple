@@ -21,4 +21,8 @@ export class PrismaSessionRepository implements sessionRepository {
     async findById(id: string) {
         return await prisma.session.findFirst({ where: { idSession: id } })
     }
+
+    async delete(id: string) {
+        await prisma.session.delete({ where: { idSession: id } })
+    }
 }
