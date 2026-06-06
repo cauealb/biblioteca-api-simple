@@ -2,12 +2,12 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import { PrismaUserRepository } from "../repository/PrismaUserRepository.js";
 import { ListUserByIdService } from "../modules/users/services/ListUserByIdService.js";
 import { PrismaRoleRepository } from "../repository/PrismaRoleRepository.js";
-import { ListRoleByNameService } from "../modules/role/services/ListRoleByNameService.js";
+import { ListRoleByIdService } from "../modules/role/services/ListRoleByIdService.js";
 
 const userRepository = new PrismaUserRepository()
 const userService = new ListUserByIdService(userRepository)
-// const roleRepository = new PrismaRoleRepository()
-// const roleService = new ListRoleByNameService
+const roleRepository = new PrismaRoleRepository()
+const roleService = new ListRoleByIdService(roleRepository)
 
 export async function ValidateAdmin(request: FastifyRequest, replay: FastifyReply) {
     const session = request.sessionUser;
@@ -24,7 +24,8 @@ export async function ValidateAdmin(request: FastifyRequest, replay: FastifyRepl
         })
     }
 
-    if(user.idRole != 1) {
+    const role = await roleService.execute(user.idRole)
+    if(role?.nameRole != "Admin") {
         return replay.status(401).send({
             err: "Seu usuário não é permitido nessa rota!"
         })
