@@ -12,6 +12,8 @@ export class DeleteSessionIdController {
         const { id } = idSchema.parse(request.params);
 
         await service.execute(id);
+        replay.clearCookie('sessionId')
+        
         replay.status(204).send()
     }
 }

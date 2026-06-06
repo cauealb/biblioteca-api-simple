@@ -17,7 +17,7 @@ export async function ValidateSessionId(request: FastifyRequest, replay: Fastify
     const session = await service.execute(sessionId)
     if(!session) {
         return replay.status(401).send({
-            err: "Essa session não está cadastrada no nosso sistema!!"
+            err: "Essa sessão não está cadastrada no nosso sistema!!"
         })
     }
 

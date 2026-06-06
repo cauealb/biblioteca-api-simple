@@ -17,8 +17,6 @@ export class CreateSessionIdController {
     const { id } = idSchema.parse(request.params);
 
     const session = await sessionService.execute(id);
-
-    console.log(session)
     replay.setCookie("sessionId", session.sessionId, {
       path: "/",
       expires: session.expireAt,
