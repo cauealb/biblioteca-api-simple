@@ -17,4 +17,8 @@ export class PrismaSessionRepository implements sessionRepository {
     async findAll() {
         return await prisma.session.findMany()
     }
+
+    async findById(id: string) {
+        return await prisma.session.findFirst({ where: { idSession: id } })
+    }
 }
