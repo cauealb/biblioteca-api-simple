@@ -10,7 +10,8 @@ export class CreateSessionIdService {
 
     async execute(id: number) {
         const sessionId = randomUUID();
-        const expireAt = new Date(60 * 60 * 24)
+        const expireAt = new Date()
+        expireAt.setDate(expireAt.getDate() + 1)
 
         const user = await this.userRepository.findById(id);
         if(!user) {
