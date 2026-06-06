@@ -17,11 +17,12 @@ export class CreateSessionIdController {
     const { id } = idSchema.parse(request.params);
 
     const session = await sessionService.execute(id);
-    replay.setCookie("sessionId", session.sessionId, {
+    replay.setCookie("sessionId", session.idSession, {
       path: "/",
       expires: session.expireAt,
     });
 
+    request.sessionUser = session
     replay.status(201).send();
   }
 }

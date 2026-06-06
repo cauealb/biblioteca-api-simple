@@ -18,7 +18,7 @@ export class CreateSessionIdService {
             throw new Error("Erro ao criar sessão, este usuário não exite no nosso bando de dados!");
         }
 
-        await this.sessionRepository.create(id, sessionId, expireAt)
-        return { sessionId, expireAt }
+        const session = await this.sessionRepository.create(id, sessionId, expireAt)
+        return session
     }
 }

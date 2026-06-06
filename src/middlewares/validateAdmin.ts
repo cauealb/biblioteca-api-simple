@@ -3,17 +3,29 @@ import { PrismaUserRepository } from "../repository/PrismaUserRepository.js";
 import { ListUserByIdService } from "../modules/users/services/ListUserByIdService.js";
 import { PrismaRoleRepository } from "../repository/PrismaRoleRepository.js";
 import { ListRoleByIdService } from "../modules/role/services/ListRoleByIdService.js";
+import { PrismaSessionRepository } from "../repository/PrismaSessionRepository.js";
+import { ListSessionIdService } from "../modules/session/services/ListSessionIdService.js";
+import { ListSessionIdByIdService } from "../modules/session/services/ListSessionIdByIdService.js";
 
 const userRepository = new PrismaUserRepository()
 const userService = new ListUserByIdService(userRepository)
+const sessionRepository = new PrismaSessionRepository()
+const sessionService = new ListSessionIdByIdService(sessionRepository)
 const roleRepository = new PrismaRoleRepository()
 const roleService = new ListRoleByIdService(roleRepository)
 
 export async function ValidateAdmin(request: FastifyRequest, replay: FastifyReply) {
-    const session = request.sessionUser;
-    if(!session) {
+    const sessionId = request.cookies.sessionId;
+    if(!sessionId) {
         return replay.status(400).send({
             err: "Seu usuário não está autenticado!"
+        })
+    }
+
+    const session = await sessionService.execute(sessionId);
+    if(!session) {
+        return replay.status(404).send({
+            err: "Nenhuma sessão encontrada!"
         })
     }
 
