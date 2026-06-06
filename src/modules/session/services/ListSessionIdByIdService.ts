@@ -6,6 +6,6 @@ export class ListSessionIdByIdService {
     ) {}
 
     async execute(id: string) {
-        
+        return this.repository.findById(id)
     }
 }
