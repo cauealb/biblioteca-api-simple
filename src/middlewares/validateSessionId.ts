@@ -26,4 +26,6 @@ export async function ValidateSessionId(request: FastifyRequest, replay: Fastify
             err: "Sua session foi expirada. Necessário entrar no sistema novamente"
         })
     }
+
+    request.sessionUser = session
 }
