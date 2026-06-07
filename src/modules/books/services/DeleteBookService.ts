@@ -6,7 +6,10 @@ export class DeleteBookService {
     ) {}
 
     async execute(id: number) {
-        // TODO: Validar id
+        const book = await this.repository.findById(id)
+        if(!book) {
+            throw new Error("Este livro não existe!")
+        }
 
         await this.repository.delete(id)
     }
