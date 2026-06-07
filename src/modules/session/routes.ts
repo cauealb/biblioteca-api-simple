@@ -14,6 +14,6 @@ export async function SessionRoutes(app: FastifyInstance) {
     app.get('/session', {preHandler: [ValidateAdmin]}, listSessionIdController.handle)
     app.get('/session/:sessionId', {preHandler: [ValidateAdmin]}, listSessionIdByIdController.handle)
     
-    app.post('/session/:id', {preHandler: [ValidateAdmin]}, createSessionIdController.handle)
-    app.delete('/session/:id', {preHandler: [ValidateAdmin]}, deleteSessionIdController.handle)
+    app.post('/session/:id', createSessionIdController.handle)
+    app.delete('/session/:id', deleteSessionIdController.handle)
 }

@@ -9,13 +9,13 @@ const service = new CreateBookService(repository)
 export class CreateBookController {
     async handle(request: FastifyRequest, replay: FastifyReply) {
         const bodySchema = z.object({ 
-            name: z.string(), 
+            title: z.string(), 
             author: z.string(),
             publishedDate: z.coerce.date()
         });
-        const { name, author, publishedDate } = bodySchema.parse(request.body);
+        const { title, author, publishedDate } = bodySchema.parse(request.body);
 
-        const book = await service.execute(name, author, publishedDate)
+        const book = await service.execute(title, author, publishedDate)
         replay.status(201).send(book)
     }
 }
