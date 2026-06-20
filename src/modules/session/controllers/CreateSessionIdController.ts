@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
+import z, { email } from "zod";
 import { PrismaUserRepository } from "../../../repository/PrismaUserRepository.js";
 import { PrismaSessionRepository } from "../../../repository/PrismaSessionRepository.js";
 import { CreateSessionIdService } from "../services/CreateSessionIdService.js";
@@ -13,10 +13,10 @@ const sessionService = new CreateSessionIdService(
 
 export class CreateSessionIdController {
   async handle(request: FastifyRequest, replay: FastifyReply) {
-    const idSchema = z.object({ id: z.coerce.number() });
-    const { id } = idSchema.parse(request.params);
+    const bodySchema = z.object({ email: z.email(), password: z.string().min(4)})
+    const {email} = bodySchema.parse(request.body)
 
-    const session = await sessionService.execute(id);
+    const session = await sessionService.execute(email);
     replay.setCookie("sessionId", session.idSession, {
       path: "/",
       expires: session.expireAt,

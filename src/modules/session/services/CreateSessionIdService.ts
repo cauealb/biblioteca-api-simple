@@ -8,17 +8,17 @@ export class CreateSessionIdService {
         private userRepository: UserRepository
     ) {}
 
-    async execute(id: number) {
+    async execute(email: string) {
         const sessionId = randomUUID();
         const expireAt = new Date()
         expireAt.setDate(expireAt.getDate() + 1)
 
-        const user = await this.userRepository.findById(id);
+        const user = await this.userRepository.findByEmail(email);
         if(!user) {
             throw new Error("Erro ao criar sessão, este usuário não exite no nosso bando de dados!");
         }
 
-        const session = await this.sessionRepository.create(id, sessionId, expireAt)
+        const session = await this.sessionRepository.create(user.idUser, sessionId, expireAt)
         return session
     }
 }
