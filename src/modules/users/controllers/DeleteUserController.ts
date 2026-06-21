@@ -8,10 +8,9 @@ const service = new DeleteUserService(repository);
 
 export class DeleteUserController {
   async handle(request: FastifyRequest, replay: FastifyReply) {
-    const idSchema = z.object({ id: z.coerce.number() });
-    const { id } = idSchema.parse(request.params);
+    const session = request.sessionUser;
 
-    await service.execute(id);
+    await service.execute(session?.idUser!);
     return replay.status(204).send();
   }
 }

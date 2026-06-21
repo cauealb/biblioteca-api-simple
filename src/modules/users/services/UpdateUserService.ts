@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import type { UserRepository } from "../../../repository/contract/userRepository.js";
 
 export class UpdateUserService {
@@ -6,6 +7,9 @@ export class UpdateUserService {
     ) {}
 
     async execute(id: number, password: string) {
-        return this.repository.update(id, password)
+        const salt = parseInt(process.env.salt!)
+        const hashPassword = await hash(password, salt);
+
+        return this.repository.update(id, hashPassword)
     }
 }
