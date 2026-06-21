@@ -15,14 +15,7 @@ const roleRepository = new PrismaRoleRepository()
 const roleService = new ListRoleByIdService(roleRepository)
 
 export async function ValidateAdmin(request: FastifyRequest, replay: FastifyReply) {
-    const sessionId = request.cookies.sessionId;
-    if(!sessionId) {
-        return replay.status(400).send({
-            err: "Seu usuário não está autenticado!"
-        })
-    }
-
-    const session = await sessionService.execute(sessionId);
+    const session = request.sessionUser;
     if(!session) {
         return replay.status(404).send({
             err: "Nenhuma sessão encontrada!"
