@@ -10,7 +10,7 @@ export class DeleteSessionIdController {
         const session = request.sessionUser;
 
         await service.execute(session?.idSession!);
-        replay.clearCookie('sessionId')
+        replay.clearCookie('sessionId', {path: '/'})
         
         replay.status(204).send()
     }

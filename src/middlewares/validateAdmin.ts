@@ -31,7 +31,7 @@ export async function ValidateAdmin(request: FastifyRequest, replay: FastifyRepl
 
     const role = await roleService.execute(user.idRole)
     if(role?.nameRole != "Admin") {
-        return replay.status(401).send({
+        return replay.status(403).send({
             err: "Seu usuário não é permitido nessa rota!"
         })
     }

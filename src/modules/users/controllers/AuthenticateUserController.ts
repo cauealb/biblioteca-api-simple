@@ -17,7 +17,6 @@ export class AuthenticateUserController {
         reply.setCookie('sessionId', session.idSession, {
             path: '/',
             expires: session.expireAt,
-            secure: true,
             httpOnly: true,
             sameSite: "lax"
         })

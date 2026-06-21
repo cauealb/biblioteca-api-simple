@@ -12,9 +12,9 @@ const listRoleByIdController = new ListRoleByIdController()
 const createRoleController = new CreateRoleController()
 
 export async function RoleRoutes(app: FastifyInstance) {
-    app.get('/roles', {preHandler: [ValidateAdmin]}, listRolesController.handle)
-    app.get('/roles/id/:id', {preHandler: [ValidateAdmin]}, listRoleByIdController.handle)
-    app.get('/roles/name/:name', {preHandler: [ValidateAdmin]}, listRoleByNameController.handle)
+    app.get('/roles', {preHandler: [ValidateSessionId, ValidateAdmin]}, listRolesController.handle)
+    app.get('/roles/id/:id', {preHandler: [ValidateSessionId, ValidateAdmin]}, listRoleByIdController.handle)
+    app.get('/roles/name/:name', {preHandler: [ValidateSessionId, ValidateAdmin]}, listRoleByNameController.handle)
 
-    app.post('/roles', { preHandler: [ValidateAdmin] }, createRoleController.handle)
+    app.post('/roles', { preHandler: [ValidateSessionId, ValidateAdmin] }, createRoleController.handle)
 }

@@ -12,8 +12,8 @@ const listSessionIdByIdController = new ListSessionIdByIdController()
 const authenticateContoller = new AuthenticateUserController()
 
 export async function SessionRoutes(app: FastifyInstance) {
-    app.get('/session', {preHandler: [ValidateAdmin]}, listSessionIdController.handle)
-    app.get('/session/:sessionId', {preHandler: [ValidateAdmin]}, listSessionIdByIdController.handle)
+    app.get('/session', {preHandler: [ValidateSessionId, ValidateAdmin]}, listSessionIdController.handle)
+    app.get('/session/:sessionId', {preHandler: [ValidateSessionId, ValidateAdmin]}, listSessionIdByIdController.handle)
     
     app.post('/login', authenticateContoller.handle)
     app.delete('/logout', {preHandler: [ValidateSessionId]}, deleteSessionIdController.handle)
