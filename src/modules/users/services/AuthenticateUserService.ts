@@ -25,5 +25,6 @@ export class AuthenticateUserService {
         }
 
         const session = await this.sessionRepository.create(user.idUser!);
+        return session
     }
 }
