@@ -15,13 +15,13 @@ export default class CreateUserController {
       nameRole: z.enum(["Admin", "User"]).default("User"),
     });
 
-    const newUser = bodySchema.parse(request.body);
+    const {email, name, nameRole, password} = bodySchema.parse(request.body);
 
     const user = await service.execute({
-      name: newUser.name,
-      email: newUser.email,
-      password: newUser.password,
-      idRole: newUser.nameRole === "User" ? 2 : 1,
+      name: name,
+      email: email,
+      password: password,
+      idRole: nameRole === "User" ? 2 : 1,
     });
 
     replay.status(201).send(user);

@@ -5,7 +5,7 @@ export class ListManyUsersService {
         private repository: UserRepository
     ) {}
 
-    async handle() {
+    async execute() {
         return await this.repository.findAll()
     }
 }

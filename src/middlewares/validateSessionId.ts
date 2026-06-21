@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { PrismaSessionRepository } from "../repository/PrismaSessionRepository.js";
+import { PrismaSessionRepository } from "../repository/prismaSessionRepository.js";
 import { ListSessionIdByIdService } from "../modules/session/services/ListSessionIdByIdService.js";
 
 const repository = new PrismaSessionRepository()

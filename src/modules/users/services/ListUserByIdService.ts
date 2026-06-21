@@ -6,6 +6,6 @@ export class ListUserByIdService {
     ) {}
 
     async execute(id: number) {
-        return this.repository.findById(id)
+        return await this.repository.findById(id)
     }
 }

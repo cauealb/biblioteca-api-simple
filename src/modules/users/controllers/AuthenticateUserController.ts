@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { PrismaUserRepository } from "../../../repository/PrismaUserRepository.js";
-import { PrismaSessionRepository } from "../../../repository/PrismaSessionRepository.js";
+import { PrismaSessionRepository } from "../../../repository/prismaSessionRepository.js";
 import { AuthenticateUserService } from "../services/AuthenticateUserService.js";
 
 const userRepository = new PrismaUserRepository()
