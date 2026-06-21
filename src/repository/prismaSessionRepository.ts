@@ -28,4 +28,8 @@ export class PrismaSessionRepository implements sessionRepository {
     async delete(id: string) {
         await prisma.session.delete({ where: { idSession: id } })
     }
+
+    async deleteAllSessionOfUser(idUser: number) {
+        await prisma.session.deleteMany({ where: { idUser: idUser }})
+    }
 }
