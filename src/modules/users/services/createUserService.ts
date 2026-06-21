@@ -1,8 +1,9 @@
 import type { User, UserRepository } from "../../../repository/contract/userRepository.js";
+import { hash } from 'bcrypt'
 
 export class CreateUserService {
     constructor(
-        private userRepository: UserRepository
+        private userRepository: UserRepository,
     ) {}
 
     async execute(data: User) {
@@ -10,7 +11,10 @@ export class CreateUserService {
         if(userExists) {
             throw new Error("Já existe um usuário com esse email!")
         }
-        
-        return this.userRepository.create(data)
+
+        const salt: number = parseInt(process.env.salt!)
+        const hashPassword: string = await hash(data.password, salt)
+
+        return await this.userRepository.create({...data, password: hashPassword})
     }
 }
