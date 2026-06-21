@@ -17,10 +17,10 @@ const updateUserController = new UpdateUserController()
 
 export async function UserRoutes(app: FastifyInstance) {
     app.get('/users', {preHandler: [ValidateSessionId, ValidateAdmin]}, listManyUsersController.handle)
-    app.get('/users/id/:id', {preHandler: [ValidateSessionId, ValidateAdmin]}, listUserByIdController.handle)
-    app.get('/users/email/:email', {preHandler: [ValidateSessionId, ValidateAdmin]}, listUserByEmailController.handle)
+    app.get('/users/id', {preHandler: [ValidateSessionId, ValidateAdmin]}, listUserByIdController.handle)
+    app.get('/users/email', {preHandler: [ValidateSessionId, ValidateAdmin]}, listUserByEmailController.handle)
 
     app.post('/users', createUserController.handle)
-    app.delete('/users/:id', { preHandler: [ValidateSessionId, ValidateSessionId] }, deleteUserController.handle)
-    app.patch('/users/:id', { preHandler: [ValidateSessionId, ValidateSessionId] }, updateUserController.handle)
+    app.delete('/users/current', { preHandler: [ValidateSessionId] }, deleteUserController.handle)
+    app.patch('/users/current', { preHandler: [ValidateSessionId] }, updateUserController.handle)
 }
