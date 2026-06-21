@@ -1,14 +1,14 @@
 import type { FastifyInstance } from "fastify";
-import { CreateSessionIdController } from "./controllers/CreateSessionIdController.js";
 import { ListSessionIdController } from "./controllers/ListSessionIdController.js";
 import { ListSessionIdByIdController } from "./controllers/ListSessionIdByIdController.js";
 import { DeleteSessionIdController } from "./controllers/DeleteSessionIdController.js";
 import { ValidateAdmin } from "../../middlewares/validateAdmin.js";
+import { AuthenticateUserController } from "../users/controllers/AuthenticateUserController.js";
 
 const listSessionIdController = new ListSessionIdController()
-const createSessionIdController = new CreateSessionIdController()
 const deleteSessionIdController = new DeleteSessionIdController()
 const listSessionIdByIdController = new ListSessionIdByIdController()
+const authenticateContoller = new AuthenticateUserController()
 
 export async function SessionRoutes(app: FastifyInstance) {
     app.get('/session', 
@@ -16,6 +16,6 @@ export async function SessionRoutes(app: FastifyInstance) {
         listSessionIdController.handle)
     app.get('/session/:sessionId', {preHandler: [ValidateAdmin]}, listSessionIdByIdController.handle)
     
-    app.post('/session/:id', createSessionIdController.handle)
+    app.post('/login', authenticateContoller.handle)
     app.delete('/session/:id', deleteSessionIdController.handle)
 }

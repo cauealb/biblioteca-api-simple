@@ -1,9 +1,7 @@
 import type { UserRepository } from "../../../repository/contract/userRepository.js";
-import dotenv from 'dotenv'
 import { compare, hash } from "bcrypt";
 import type { sessionRepository } from "../../../repository/contract/sessionRepository.js";
 
-dotenv.config()
 export class AuthenticateUserService {
     constructor(
         private userRepository: UserRepository,
@@ -16,10 +14,7 @@ export class AuthenticateUserService {
             throw new Error("Est usuário não existe no nosso banco de dados!");
         }
 
-        const salt: number = parseInt(process.env.salt!);
-        const takeHashPassword: string = await hash(password, salt)
-        const comparePasswords: boolean = await compare(takeHashPassword, user.password);
-        
+        const comparePasswords: boolean = await compare(password, user.password);
         if(!comparePasswords) {
             throw new Error("Senha não válida!");
         }
