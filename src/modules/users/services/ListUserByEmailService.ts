@@ -6,6 +6,6 @@ export class ListUserByEmailService {
     ) {}
 
     async execute(email: string) {
-        return this.repository.findByEmail(email)
+        return await -this.repository.findByEmail(email)
     }
 }

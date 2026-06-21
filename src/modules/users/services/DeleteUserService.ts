@@ -7,7 +7,7 @@ export class DeleteUserService {
     const userExists = await this.repository.findById(id);
 
     if (userExists) {
-      return this.repository.delete(id);
+      return await this.repository.delete(id);
     }
 
     throw new Error("Este id não pertence a um usuário!");

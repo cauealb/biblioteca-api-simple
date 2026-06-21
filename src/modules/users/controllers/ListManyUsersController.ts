@@ -7,7 +7,7 @@ const service = new ListManyUsersService(repository);
 
 export class ListManyUsersController {
   async handle(request: FastifyRequest, replay: FastifyReply) {
-    const user = await service.handle();
+    const user = await service.execute();
     replay.status(200).send(user);
   }
 }

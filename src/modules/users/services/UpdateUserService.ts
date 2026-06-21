@@ -10,6 +10,6 @@ export class UpdateUserService {
         const salt = parseInt(process.env.salt!)
         const hashPassword = await hash(password, salt);
 
-        return this.repository.update(id, hashPassword)
+        return await this.repository.update(id, hashPassword)
     }
 }
