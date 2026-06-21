@@ -4,7 +4,10 @@ import { UserRoutes } from "./modules/users/routes.js";
 import { SessionRoutes } from "./modules/session/routes.js";
 import { RoleRoutes } from "./modules/role/routes.js";
 import { BookRoutes } from "./modules/books/routes.js";
+import dotenv from 'dotenv'
+
 const app = fastify();
+dotenv.config()
 
 app.register(cookie)
 app.register(UserRoutes)

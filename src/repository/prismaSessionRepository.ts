@@ -1,8 +1,13 @@
 import type { sessionRepository } from "./contract/sessionRepository.js";
 import prisma from "../lib/prisma.js";
+import { randomUUID } from "node:crypto";
 
 export class PrismaSessionRepository implements sessionRepository {
-    async create(idUser: number, sessionId: string, expireAt: Date) {
+    async create(idUser: number) {
+        const sessionId = randomUUID();
+        const expireAt = new Date();
+        expireAt.setDate(expireAt.getDate() + 1);
+
         return await prisma.session.create({
             data: {
                 idSession: sessionId,

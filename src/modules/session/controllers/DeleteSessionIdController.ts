@@ -1,5 +1,4 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import z from "zod";
 import { PrismaSessionRepository } from "../../../repository/PrismaSessionRepository.js";
 import { DeleteSessionIdService } from "../services/DeleteSessionIdService.js";
 
@@ -8,10 +7,9 @@ const service = new DeleteSessionIdService(repository)
 
 export class DeleteSessionIdController {
     async handle(request: FastifyRequest, replay: FastifyReply) {
-        const idSchema = z.object({ id: z.coerce.string() })
-        const { id } = idSchema.parse(request.params);
+        const session = request.sessionUser;
 
-        await service.execute(id);
+        await service.execute(session?.idSession!);
         replay.clearCookie('sessionId')
         
         replay.status(204).send()
