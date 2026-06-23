@@ -1,5 +1,5 @@
 import type { UserRepository } from "../../../repository/contract/userRepository.js";
-import { compare, hash } from "bcrypt";
+import { compare } from "bcrypt";
 import type { sessionRepository } from "../../../repository/contract/sessionRepository.js";
 
 export class AuthenticateUserService {
