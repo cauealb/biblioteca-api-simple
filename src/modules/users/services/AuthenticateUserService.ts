@@ -19,7 +19,7 @@ export class AuthenticateUserService {
             throw new Error("Senha não válida!");
         }
 
-        const session = await this.sessionRepository.create(user.idUser!);
+        const session = await this.sessionRepository.create(user.idUser!);   
         return session   
     }
 }
