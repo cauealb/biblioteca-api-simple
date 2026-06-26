@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import CreateUserController from "./controllers/CreateUserController.js";
+import CreateUserController from "./controllers/createUserController.js";
 import { DeleteUserController } from "./controllers/DeleteUserController.js";
 import { ListManyUsersController } from "./controllers/ListManyUsersController.js";
 import { ListUserByIdController } from "./controllers/ListUserByIdController.js";

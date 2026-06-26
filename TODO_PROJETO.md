@@ -4,10 +4,10 @@ Checklist pratico para melhorar este projeto backend.
 
 ## 1. Autenticacao e seguranca
 
-- [ ] Alterar login para receber `email` e `password`, nao `id` pela URL.
-- [ ] Instalar e usar `bcrypt` ou `argon2` para hash de senha.
-- [ ] Salvar senha apenas com hash no banco.
-- [ ] Validar senha no login usando `compare`.
+- [x] Alterar login para receber `email` e `password`, nao `id` pela URL.
+- [x] Instalar e usar `bcrypt` ou `argon2` para hash de senha.
+- [x] Salvar senha apenas com hash no banco.
+- [x] Validar senha no login usando `compare`.
 - [ ] Impedir criacao publica de usuario `Admin`.
 - [ ] Criar seed ou script interno para criar roles iniciais.
 - [ ] Remover dependencia de IDs fixos de role, como `1 = Admin` e `2 = User`.
@@ -19,8 +19,8 @@ Checklist pratico para melhorar este projeto backend.
 
 ## 2. Rotas e API design
 
-- [ ] Trocar `POST /session/:id` por `POST /sessions` ou `POST /login`.
-- [ ] Trocar `DELETE /session/:id` por `DELETE /sessions/current` ou `POST /logout`.
+- [x] Trocar `POST /session/:id` por `POST /sessions` ou `POST /login`.
+- [x] Trocar `DELETE /session/:id` por `DELETE /sessions/current` ou `POST /logout`.
 - [ ] Trocar `GET /users/id/:id` por `GET /users/:id`.
 - [ ] Trocar `GET /books/id/:id` por `GET /books/:id`.
 - [ ] Padronizar nomes no plural: `/users`, `/books`, `/roles`, `/sessions`.
